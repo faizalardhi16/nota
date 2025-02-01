@@ -14,8 +14,8 @@ pipeline {
 
         stage('Shutdown Service') {
             steps {
-                sh 'docker stop proja-apps || true'  // Gunakan "|| true" untuk mengabaikan error jika container tidak ada
-                sh 'docker rmi -f proja:latest || true'  // Gunakan "|| true" untuk mengabaikan error jika image tidak ada
+                sh 'docker stop proja-apps && docker rm proja-apps' 
+                sh 'docker rmi -f proja:latest' 
             }
         }
 
