@@ -21,8 +21,7 @@ pipeline {
 
         stage('Build Image') {
             steps {
-                def tags = 'latest'
-                sh 'docker build -t proja:${tags} .'
+                sh 'docker build -t proja:latest .'
             }
         }
 
