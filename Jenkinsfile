@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/username/nota.git'
+                git branch: 'master', url: 'https://github.com/faizalardhi16/nota.git'
             }
         }
 
