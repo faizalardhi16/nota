@@ -5,15 +5,10 @@ pipeline {
         nodejs 'Node JS 22' // Sesuaikan dengan nama Node.js yang dikonfigurasi di Jenkins
     }
 
-    environment{
-        BRANCH = 'master'
-        URL = 'https://github.com/username/nota.git'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: BRANCH, url: URL 
+                git branch: 'master', url: 'https://github.com/username/nota.git'
             }
         }
 
