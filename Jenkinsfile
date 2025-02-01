@@ -8,7 +8,7 @@ pipeline {
     environment {
         DOCKER_IMAGE = 'proja:latest'
         CONTAINER_NAME = 'proja-apps'
-        REPO_URL = 'git@github.com:faizalardhi16/nota.git' // Gunakan SSH URL untuk menghindari masalah autentikasi
+        REPO_URL = 'https://github.com/faizalardhi16/nota.git' // Gunakan SSH URL untuk menghindari masalah autentikasi
         BRANCH_NAME = 'master'
     }
 
