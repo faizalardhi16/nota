@@ -5,29 +5,41 @@ pipeline {
         nodejs 'Node JS 22' // Sesuaikan dengan nama Node.js yang dikonfigurasi di Jenkins
     }
 
+    environment {
+        DOCKER_IMAGE = 'proja:latest'
+        CONTAINER_NAME = 'proja-apps'
+        REPO_URL = 'git@github.com:faizalardhi16/nota.git' // Gunakan SSH URL untuk menghindari masalah autentikasi
+        BRANCH_NAME = 'master'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/faizalardhi16/nota.git'
+                // Menggunakan SSH untuk mengakses repositori GitHub
+                git branch: "${BRANCH_NAME}", url: "${REPO_URL}"
             }
         }
 
         stage('Shutdown Service') {
             steps {
-                sh 'sudo docker stop proja-apps'
-                sh 'sudo docker rmi -f proja:latest'
+                script {
+                    // Memastikan container tidak berjalan sebelum memulai build baru
+                    sh 'docker ps -q -f name=${CONTAINER_NAME} | xargs -r docker stop' // Memastikan container sudah dihentikan
+                    sh 'docker ps -a -q -f name=${CONTAINER_NAME} | xargs -r docker rm'  // Menghapus container yang lama
+                    sh 'docker rmi -f ${DOCKER_IMAGE}'  // Menghapus image lama
+                }
             }
         }
 
         stage('Build Image') {
             steps {
-                sh 'sudo docker build -t proja:latest .'
+                sh 'docker build -t ${DOCKER_IMAGE} .'  // Membangun Docker image baru
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'sudo docker run -p 3000:3000 --name proja-apps proja:latest'
+                sh 'docker run -p 3000:3000 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}'  // Menjalankan container dari image baru
                 sh 'echo "Deploying application..."'
             }
         }
