@@ -14,20 +14,20 @@ pipeline {
 
         stage('Shutdown Service') {
             steps {
-                sh 'docker stop proja-apps'
-                sh 'docker rmi -f proja:latest'
+                sh 'sudo docker stop proja-apps'
+                sh 'sudo docker rmi -f proja:latest'
             }
         }
 
         stage('Build Image') {
             steps {
-                sh 'docker build -t proja:latest .'
+                sh 'sudo docker build -t proja:latest .'
             }
         }
 
         stage('Deploy') {
             steps {
-                sh 'docker run -p 3000:3000 --name proja-apps proja:latest'
+                sh 'sudo docker run -p 3000:3000 --name proja-apps proja:latest'
                 sh 'echo "Deploying application..."'
             }
         }
